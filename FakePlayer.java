@@ -84,21 +84,21 @@ public class FakePlayer implements Listener {
 		}.runTaskTimer(plu, 1, 1);
 		
 		ProtocolLibrary.getProtocolManager().addPacketListener(
-				  new PacketAdapter(plu, ConnectionSide.CLIENT_SIDE, Packets.Client.USE_ENTITY) {
-					@Override
-					public void onPacketReceiving(PacketEvent event) {
-						PacketContainer packet = event.getPacket();
-						for(EntityPlayer ep : playerMap.values()){
-							if(packet.getIntegers().getValues().get(0) == ep.getId()){
-								Bukkit.getScheduler().scheduleSyncDelayedTask(plu, new Runnable(){
-									public void run(){
-										event.getPlayer().performCommand(commands.get(ep.getName()));
-									}
-								},1);
+		  new PacketAdapter(plu, ConnectionSide.CLIENT_SIDE, Packets.Client.USE_ENTITY) {
+			@Override
+			public void onPacketReceiving(PacketEvent event) {
+				PacketContainer packet = event.getPacket();
+				for(EntityPlayer ep : playerMap.values()){
+					if(packet.getIntegers().getValues().get(0) == ep.getId()){
+						Bukkit.getScheduler().scheduleSyncDelayedTask(plu, new Runnable(){
+							public void run(){
+								event.getPlayer().performCommand(commands.get(ep.getName()));
 							}
-						}
-					}	
-				 });
+						},1);
+					}
+				}
+			}	
+		 });
     }
     
     
@@ -268,7 +268,6 @@ public class FakePlayer implements Listener {
  		as.setSmall(true);
  		as.setGravity(false);
  		npc.setLocation(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
-
     }
     
     public void addPlayer(String name, String skinName, Location l, String command) {
@@ -298,67 +297,64 @@ public class FakePlayer implements Listener {
 		as.setSmall(true);
 		as.setGravity(false);
 		npc.setLocation(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
-
-        
-        
     }
 
 
     
-	  private float a(float f, float f1, float f2) {
-	        float f3 = MathHelper.g(f1 - f);
-
-	        if (f3 > f2) {
-	            f3 = f2;
-	        }
-
-	        if (f3 < -f2) {
-	            f3 = -f2;
-	        }
-
-	        return f + f3;
+	private float a(float f, float f1, float f2) {
+	    float f3 = MathHelper.g(f1 - f);
+	
+	    if (f3 > f2) {
+	        f3 = f2;
 	    }
+	
+	    if (f3 < -f2) {
+	        f3 = -f2;
+	    }
+	
+	    return f + f3;
+	}
 	  
-	  public GameProfile fillProfileProperties(GameProfile profile,
-              boolean requireSecure) throws Exception {
-
-		//if (!Bukkit.isPrimaryThread())
-		//throw new IllegalStateException("NMS.fillProfileProperties cannot be invoked from the main thread.");
-		
-		MinecraftSessionService sessionService = ((CraftServer) Bukkit.getServer()).getServer().aD();
-		
-		YggdrasilAuthenticationService auth = ((YggdrasilMinecraftSessionService) sessionService)
-		.getAuthenticationService();
-		
-		URL url = HttpAuthenticationService.constantURL(
-		"https://sessionserver.mojang.com/session/minecraft/profile/" +
-		UUIDTypeAdapter.fromUUID(profile.getId()));
-		
-		url = HttpAuthenticationService.concatenateURL(url, "unsigned=" + !requireSecure);
-		Method MAKE_REQUEST = null;
-		try {
-            MAKE_REQUEST = YggdrasilAuthenticationService.class.getDeclaredMethod("makeRequest", URL.class,
-                    Object.class, Class.class);
-            MAKE_REQUEST.setAccessible(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-		MinecraftProfilePropertiesResponse response = (MinecraftProfilePropertiesResponse)
-		MAKE_REQUEST.invoke(auth, url, null, MinecraftProfilePropertiesResponse.class);
-		if (response == null)
-		return profile;
-		
-		GameProfile result = new GameProfile(profile.getId(), profile.getName());
-		result.getProperties().putAll(response.getProperties());
-		profile.getProperties().putAll(response.getProperties());
-		
-		return result;
+	public GameProfile fillProfileProperties(GameProfile profile,
+			boolean requireSecure) throws Exception {
+			
+			//if (!Bukkit.isPrimaryThread())
+			//throw new IllegalStateException("NMS.fillProfileProperties cannot be invoked from the main thread.");
+			
+			MinecraftSessionService sessionService = ((CraftServer) Bukkit.getServer()).getServer().aD();
+			
+			YggdrasilAuthenticationService auth = ((YggdrasilMinecraftSessionService) sessionService)
+			.getAuthenticationService();
+			
+			URL url = HttpAuthenticationService.constantURL(
+			"https://sessionserver.mojang.com/session/minecraft/profile/" +
+			UUIDTypeAdapter.fromUUID(profile.getId()));
+			
+			url = HttpAuthenticationService.concatenateURL(url, "unsigned=" + !requireSecure);
+			Method MAKE_REQUEST = null;
+			try {
+			    MAKE_REQUEST = YggdrasilAuthenticationService.class.getDeclaredMethod("makeRequest", URL.class,
+			            Object.class, Class.class);
+			    MAKE_REQUEST.setAccessible(true);
+			} catch (Exception ex) {
+			    ex.printStackTrace();
+			}
+			MinecraftProfilePropertiesResponse response = (MinecraftProfilePropertiesResponse)
+			MAKE_REQUEST.invoke(auth, url, null, MinecraftProfilePropertiesResponse.class);
+			if (response == null)
+			return profile;
+			
+			GameProfile result = new GameProfile(profile.getId(), profile.getName());
+			result.getProperties().putAll(response.getProperties());
+			profile.getProperties().putAll(response.getProperties());
+			
+			return result;
 	}
 	 
     
     
     public static void sendPacket(Player player, Object packet) {
-        try {
+    	try {
             Object handle = player.getClass().getMethod("getHandle").invoke(player);
             Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
             playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
