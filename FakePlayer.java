@@ -149,12 +149,12 @@ public class FakePlayer implements Listener {
 				PacketPlayOutEntityLook packet3 = new PacketPlayOutEntityLook(ep.getId(), (byte)(loc.getYaw() * 256/ 360), (byte)(loc.getPitch() * 256 / 360), false);
 				for(Player p1 : Bukkit.getOnlinePlayers()){
 					if(p1.getUniqueId().toString().equalsIgnoreCase(p.getUniqueId().toString()))
-						sendPacket(p, packet3);
+						sendPacket(p1, packet3);
 				}
 				PacketPlayOutEntityHeadRotation packet4 = new PacketPlayOutEntityHeadRotation(ep, (byte)(loc.getYaw() * 256/ 360));
 				for(Player p1 : Bukkit.getOnlinePlayers()){
 					if(p1.getUniqueId().toString().equalsIgnoreCase(p.getUniqueId().toString()))
-						sendPacket(p, packet4);
+						sendPacket(p1, packet4);
 				}
     		}
     	}
@@ -172,17 +172,17 @@ public class FakePlayer implements Listener {
 					PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.ADD_PLAYER, ep);
 					for(Player p1 : Bukkit.getOnlinePlayers()){
 						if(p1.getUniqueId().toString().equalsIgnoreCase(uuid) && p1.getLocation().getWorld().getName().equalsIgnoreCase(locationMap.get(ep.getName()).getWorld().getName()))
-							sendPacket(p, packet);
+							sendPacket(p1, packet);
 					}
 					PacketPlayOutNamedEntitySpawn packet1 = new PacketPlayOutNamedEntitySpawn(ep);
 					for(Player p1 : Bukkit.getOnlinePlayers()){
 						if(p1.getUniqueId().toString().equalsIgnoreCase(uuid))
-							sendPacket(p, packet1);
+							sendPacket(p1, packet1);
 					}
 					PacketPlayOutEntityTeleport packet2 = new PacketPlayOutEntityTeleport(ep.getId(), (int)( loc.getX() * 32), (int)( loc.getY() * 32), (int)( loc.getZ() * 32), (byte) ((int)( loc.getYaw() * 256 / 360)), (byte) ((int) loc.getPitch() * 256 / 360), false);
 					for(Player p1 : Bukkit.getOnlinePlayers()){
 						if(p1.getUniqueId().toString().equalsIgnoreCase(uuid))
-							sendPacket(p, packet2);
+							sendPacket(p1, packet2);
 					}
 					
 				}
@@ -194,7 +194,7 @@ public class FakePlayer implements Listener {
 					PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.REMOVE_PLAYER, ep);
 					for(Player p1 : Bukkit.getOnlinePlayers()){
 						if(p1.getUniqueId().toString().equalsIgnoreCase(uuid))
-							sendPacket(p, packet);
+							sendPacket(p1, packet);
 					}
 				}
 			}
@@ -211,26 +211,26 @@ public class FakePlayer implements Listener {
 					PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.ADD_PLAYER, ep);
 					for(Player p1 : Bukkit.getOnlinePlayers()){
 						if(p1.getUniqueId().toString().equalsIgnoreCase(uuid) && p1.getLocation().getWorld().getName().equalsIgnoreCase(locationMap.get(ep.getName()).getWorld().getName()))
-							sendPacket(p, packet);
+							sendPacket(p1, packet);
 					}
 					
 					PacketPlayOutEntityDestroy packet2 = new PacketPlayOutEntityDestroy(ep.getId());
 					for(Player p1 : Bukkit.getOnlinePlayers()){
 						if(p1.getUniqueId().toString().equalsIgnoreCase(uuid) && p1.getLocation().getWorld().getName().equalsIgnoreCase(locationMap.get(ep.getName()).getWorld().getName()))
-							sendPacket(p, packet2);
+							sendPacket(p1, packet2);
 					}
 			    
 					
 					PacketPlayOutNamedEntitySpawn packet3 = new PacketPlayOutNamedEntitySpawn(ep);
 					for(Player p1 : Bukkit.getOnlinePlayers()){
 						if(p1.getUniqueId().toString().equalsIgnoreCase(uuid) && p1.getLocation().getWorld().getName().equalsIgnoreCase(locationMap.get(ep.getName()).getWorld().getName()))
-							sendPacket(p, packet3);
+							sendPacket(p1, packet3);
 					}
 					Location loc = locationMap.get(ep.getName());
 					PacketPlayOutEntityTeleport packet4 = new PacketPlayOutEntityTeleport(ep.getId(), (int)( loc.getX() * 32), (int)( loc.getY() * 32), (int)( loc.getZ() * 32), (byte) ((int)( loc.getYaw() * 256 / 360)), (byte) ((int) loc.getPitch() * 256 / 360), false);
 					for(Player p1 : Bukkit.getOnlinePlayers()){
 						if(p1.getUniqueId().toString().equalsIgnoreCase(uuid) && p1.getLocation().getWorld().getName().equalsIgnoreCase(locationMap.get(ep.getName()).getWorld().getName()))
-							sendPacket(p, packet4);
+							sendPacket(p1, packet4);
 					}
 				}
 			}
@@ -241,7 +241,7 @@ public class FakePlayer implements Listener {
 					PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.REMOVE_PLAYER, ep);
 					for(Player p1 : Bukkit.getOnlinePlayers()){
 						if(p1.getUniqueId().toString().equalsIgnoreCase(uuid))
-							sendPacket(p, packet);
+							sendPacket(p1, packet);
 					}
 				}
 			}
